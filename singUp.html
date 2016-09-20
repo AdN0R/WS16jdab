@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="tipo_contenido" content="text/html;" http-equiv="content-type" charset="utf-8">
+		<title>Quizzes</title>
+		<link rel='stylesheet' type='text/css' href='stylesPWS/style.css' />
+		<link rel='stylesheet' 
+			   type='text/css' 
+			   media='only screen and (min-width: 530px) and (min-device-width: 481px)'
+			   href='stylesPWS/wide.css' />
+		<link rel='stylesheet' 
+			   type='text/css' 
+			   media='only screen and (max-width: 480px)'
+			   href='stylesPWS/smartphone.css' />
+		
+		<script type="text/javascript">
+			function ikusBalioak(){
+				var sAux="";
+				var frm=document.getElementById("erregistro");
+				for(i=1;i<frm.elements.length;i++){
+					if(frm.elements[i].value!="Ezabatu" && frm.elements[i].value!="Bidali" && frm.elements[i].value!="Atzerantz"){
+						sAux +="IZENA: .  " + frm.elements[i].name+". ";
+						sAux +="BALIOA: " + frm.elements[i].value+"\n";
+						}
+				}
+				alert(sAux);
+			}
+		</script>
+		</head>
+	<body>
+		<center>
+		<h1 id="titulua"> Formularioa</h1><br />
+		<form id="erregistro" name="erregistro" onSubmit="ikusBalioak()">
+			Izen-abizenak:<br />
+			<input type="text" name="izenabizen"><br /><br />
+			
+			Eposta elektronikoa:<br />
+			<input type="email" name="Eposta" value="emaila@zerbait.com"><br /><br />
+			
+			Pasahitza:<br />
+			<input type="password" name="Pasahitza" value="******"><br /><br />
+			
+			Telefono zenbakia:<br />
+			<input type="tel" name="Telefonoa"><br /><br />
+			
+			Espezialitatea:<br />
+			<select name="Espezialitatea">
+				<option value="Software Ingeniaritza">Software Ingeniaritza</option>
+				<option value="Konputagailuen Ingeniaritza">Konputagailuen Ingeniaritza</option>
+				<option value="Konputazioa">Konputazioa</option>
+			</select><br /><br />
+			
+			Intereseko teknologiak:<br />
+			<textarea name="Teknologiak"></textarea><br /><br />
+			
+			Intereseko erremintak:<br />
+			<textarea name="Erremintak"> </textarea><br /><br />
+			
+			Argazki bat igo: <br />
+			<input type="file" name="Argazki URL"accept="image/*" /><br /><br />
+			
+			<input class="botoia" type="button" value="Atzerantz" onclick="location.href='./layout.html';" /><input class="botoia" type="reset" value="Ezabatu" /><input class="botoia" type="submit" value="Bidali" /></center>
+		</form>
+	</body>
+</html>

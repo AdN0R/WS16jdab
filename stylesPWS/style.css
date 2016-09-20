@@ -14,3 +14,22 @@ nav span             			{ margin: 0px 10px 0px 0px;
 						display: inline-block;}
 
 #ErrorMsgs          		 { color: #f61; font-size: smaler}
+
+.argazki{
+	width: 150px;
+	height: 100px;
+}
+
+#titulua{
+	margin-top: 20px;
+	color: green;
+}
+
+.botoia{
+	margin: 7px;
+	padding: 5px;
+}
+
+#ezk{
+	float:left;
+}
