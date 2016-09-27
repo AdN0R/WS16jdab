@@ -32,33 +32,13 @@
 				var frm=document.getElementById("erregistro");
 				for(i=0;i<frm.elements.length;i++){
 					elem = frm.elements[i];
-					if(elem.name=="izenabizen"){
-						var er = new RegExp("[A-Z].*[A-Z].*[A-Z].*");
-						var posbal = elem.value;
-						if(elem.value.trim()==""){
-							msg += "Izen-abizenak hutsik daude.\r\n";
-						}else if(!er.test(posbal)){
-							msg += "Izena Abizen1 Abizen2 formatua erabili behar da.\r\n";
-						}
-					}else if(elem.name=="Eposta"){
+					if(elem.name=="Eposta"){
 						var er = new RegExp("[a-z]*[0-9]{3}@ikasle\.ehu\.e(s|us)");
 						var posbal = elem.value;
 						if(posbal.trim()==""){
 							msg += "Eposta hutsik dago.\r\n";
 						}else if(!er.test(posbal)){
 							msg += "Eposta zuzena izan behar da (LDAP@ikasle.ehu.es|eus).\r\n";
-						}
-					}else if(elem.name=="Pasahitza"){
-						if(elem.value.length < 6){
-							msg += "Pasahitzak gutxienez 6ko luzera izan behar du.\r\n";
-						}
-					}else if(elem.name=="Telefonoa"){
-						var er = new RegExp("[0-9]{9}");
-						var posbal = elem.value;
-						if(posbal.trim()==""){
-							msg += "Telefonoa hutsik dago.\r\n";
-						}else if(!er.test(posbal)){
-							msg += "Telefono zenbakia 9 digitu izan behar ditu.\r\n";
 						}
 					}
 				}
@@ -68,6 +48,36 @@
 					alert(msg);
 				}
 			}
+			
+			function sortuKutxa(){
+				var elem = document.getElementById("espezialitatea");
+				if(elem.value=="Besterik"){
+					var s = document.createElement("br");
+					document.getElementById("beste").appendChild(s);
+					var node = document.createElement("INPUT");
+					node.setAttribute("type","text");
+					node.setAttribute("name","Beste Espezialitatea");
+					node.setAttribute("value","Sartu espezialitate izena");
+					document.getElementById("beste").appendChild(node);
+					
+				}else{
+					var b = document.getElementById("beste");
+					if(b.hasChildNodes()){
+						b.removeChild(b.childNodes[1]);
+						b.removeChild(b.childNodes[0]);
+					}
+				}					
+			}
+			
+			function sortuArgazki(){
+				var img = document.getElementById("img");
+				var arg = document.getElementById("argazki");
+				var node = document.createElement("img");
+				node.setAttribute("src",".\\"+img.value);
+				node.setAttribute("width", "250px");
+				node.setAttribute("height","250px");
+				arg.appendChild(node);
+			}
 		</script>
 		</head>
 	<body>
@@ -75,24 +85,26 @@
 		<h1 id="titulua"> Formularioa</h1><br />
 		<form id="erregistro" name="erregistro" onSubmit="balioztatu()">
 			Izen-abizenak: (*)<br />
-			<input type="text" name="izenabizen"><br /><br />
+			<input pattern="[A-Z].*[A-Z].*[A-Z].*" name="izenabizen" required></input><br /><br />
 			
 			Eposta elektronikoa: (*)<br />
-			<input type="text" name="Eposta" value="LDAP@ikasle.ehu.es"><br /><br />
+			<input type="email" name="Eposta" value="LDAP@ikasle.ehu.es" required><br /><br />
 			
 			Pasahitza: (*)<br />
-			<input type="text" name="Pasahitza" value="*****"><br /><br />
+			<input type="password" name="Pasahitza" minlength=6 required><br /><br />
 			
 			Telefono zenbakia: (*)<br />
-			<input type="text" name="Telefonoa"><br /><br />
+			<input type="tel" name="Telefonoa" minlength=9 maxlength=9 required><br /><br />
 			
 			Espezialitatea:<br />
-			<select name="Espezialitatea">
+			<select name="Espezialitatea" onChange="sortuKutxa()" id ="espezialitatea">
 				<option value="Software Ingeniaritza">Software Ingeniaritza</option>
 				<option value="Konputagailuen Ingeniaritza">Konputagailuen Ingeniaritza</option>
 				<option value="Konputazioa">Konputazioa</option>
 				<option value="Besterik">Besterik</option>
-			</select><br /><br />
+			</select><br />
+			
+			<div id="beste"></div><br />
 			
 			Intereseko teknologiak:<br />
 			<textarea name="Teknologiak"></textarea><br /><br />
@@ -101,7 +113,7 @@
 			<textarea name="Erremintak"> </textarea><br /><br />
 			
 			Argazki bat igo: <br />
-			<input type="file" name="Argazki URL"accept="image/*" /><br /><br />
+			<input type="file" name="Argazki URL" id="img" accept="image/*" onChange="sortuArgazki()" /><div id="argazki"></div><br /><br />
 			
 			<input class="botoia" type="button" value="Atzerantz" onclick="location.href='./layout.html';" />
 			<input class="botoia" type="reset" value="Ezabatu" />
