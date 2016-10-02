@@ -33,3 +33,11 @@ nav span             			{ margin: 0px 10px 0px 0px;
 #ezk{
 	float:left;
 }
+
+#dinArgazkia{
+	display: none;
+    height: auto; 
+    width: auto; 
+    max-width: 300px; 
+    max-height: 300px;
+}

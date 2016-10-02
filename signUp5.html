@@ -43,47 +43,19 @@
 					}
 				}
 				if (msg==""){
-					ikusBalioak();
+					return ikusBalioak();
 				}else{
-					alert(msg);
+					return alert(msg);
 				}
 			}
 			
-			function sortuKutxa(){
-				var elem = document.getElementById("espezialitatea");
-				if(elem.value=="Besterik"){
-					var s = document.createElement("br");
-					document.getElementById("beste").appendChild(s);
-					var node = document.createElement("INPUT");
-					node.setAttribute("type","text");
-					node.setAttribute("name","Beste Espezialitatea");
-					node.setAttribute("value","Sartu espezialitate izena");
-					document.getElementById("beste").appendChild(node);
-					
-				}else{
-					var b = document.getElementById("beste");
-					if(b.hasChildNodes()){
-						b.removeChild(b.childNodes[1]);
-						b.removeChild(b.childNodes[0]);
-					}
-				}					
-			}
-			
-			function sortuArgazki(){
-				var img = document.getElementById("img");
-				var arg = document.getElementById("argazki");
-				var node = document.createElement("img");
-				node.setAttribute("src",".\\"+img.value);
-				node.setAttribute("width", "250px");
-				node.setAttribute("height","250px");
-				arg.appendChild(node);
-			}
+
 		</script>
 		</head>
 	<body>
 		<center>
 		<h1 id="titulua"> Formularioa</h1><br />
-		<form id="erregistro" name="erregistro" onSubmit="balioztatu()">
+		<form id="erregistro" name="erregistro" onSubmit="return balioztatu()">
 			Izen-abizenak: (*)<br />
 			<input pattern="[A-Z].*[A-Z].*[A-Z].*" name="izenabizen" required></input><br /><br />
 			
