@@ -24,15 +24,15 @@ var msg = "";
 			}else if(!er.test(posbal)){
 				msg += "Izena Abizen1 eta Abizen2 bete formatu egokian.\r\n";
 			}
-		}else if(elem.name=="Eposta"){
-			var er = new RegExp("[a-z]*[0-9]{3}@ikasle\.ehu\.e(s|us)");
+		}/*else if(elem.name=="Eposta"){
+			var er = new RegExp("/[a-z]{3,}[0-9]{3}@ikasle\.ehu\.e(s|us)/");
 			var posbal = elem.value;
 			if(posbal.trim()==""){
 				msg += "Eposta hutsik dago.\r\n";
 			}else if(!er.test(posbal)){
 				msg += "Eposta zuzena izan behar da (LDAP@ikasle.ehu.es|eus).\r\n";
 			}
-		}else if(elem.name=="Pasahitza"){
+		}*/else if(elem.name=="Pasahitza"){
 			if(elem.value.length < 6){
 				msg += "Pasahitzak gutxienez 6ko luzera izan behar du.\r\n";
 			}
