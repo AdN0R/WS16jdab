@@ -25,7 +25,7 @@ var msg = "";
 				msg += "Izena Abizen1 eta Abizen2 bete formatu egokian.\r\n";
 			}
 		}/*else if(elem.name=="Eposta"){
-			var er = new RegExp("/[a-z]{3,}[0-9]{3}@ikasle\.ehu\.e(s|us)/");
+			var er = new RegExp("/[a-z]{3,}[0-9]{3}(@ikasle\.ehu\.e)(s|us)/");
 			var posbal = elem.value;
 			if(posbal.trim()==""){
 				msg += "Eposta hutsik dago.\r\n";

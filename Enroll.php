@@ -1,6 +1,6 @@
 <?php
 	$val=$_POST['Eposta'];
-	$opt=array("options"=>array("regexp"=>"/[a-z]{3,}[0-9]{3}@ikasle\.ehu\.e(s|us)/"));
+	$opt=array("options"=>array("regexp"=>"/^[a-z]{3,}[0-9]{3}(@ikasle\.ehu\.e)(s|us)$/"));
 	if(filter_var($val, FILTER_VALIDATE_REGEXP, $opt)){
 		$esteka = new mysqli("mysql.hostinger.es", "u361099527_u3610", "reportx9", "u361099527_quizz");
 			
@@ -15,6 +15,6 @@
 		$esteka->close();
 	}else{
 		echo "Eposta ez du LDAP@ikasle.ehu.e(u)s formatua.";
-		echo "<p> <a href='signUp.html'> Atzerantz</a>";
+		echo "<a href='signUp.html'> Atzerantz</a>";
 	}
 ?>
