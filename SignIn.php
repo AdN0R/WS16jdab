@@ -18,7 +18,7 @@
 	<body>
 		<center>
 			<h1 id="titulua">Autentikatu</h1><br />
-			<form id="fAutentikatu" name="fAutentikatu" onSubmit="return autentikatu()" method="POST" action="InsertQuestion.php">
+			<form id="fAutentikatu" name="fAutentikatu" action="SignIn.php" method="POST" action="SignIn.php">
 			Eposta elektronikoa:<br />
 			<input type="text" name="Eposta" value="LDAP@ikasle.ehu.es"><br /><br />
 			
@@ -33,12 +33,19 @@
 <?php
 	if(isset($_POST['Eposta'])){
 		if (!filter_var($_POST['Eposta'], FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-z]{3,}[0-9]{3}(@ikasle\.ehu\.e)(s|us)$/"))) === false) {
-
+				$esteka = new mysqli("mysql.hostinger.es", "u361099527_u3610", "reportx9", "u361099527_quizz");
+	
+				$sen ="SELECT count(*) FROM erabiltzailea WHERE Eposta LIKE '$_POST[Eposta]' AND Pasahitza LIKE '$_POST[Pasahitza]'";	
+				$ema=$esteka->query($sen);
+				
+				if($ema==1){
+					header("Location: ./InsertQuestion.php");
+				}else{
+					echo "<center><font color='red'>Email hau ez dago erregistratua</font></center>";
+				}
+		}else{
+			echo "<center><font color='red'>Emailaren formatoa txarto dago</font></center>";
+		}
 	}
-	$esteka = new mysqli("mysql.hostinger.es", "u361099527_u3610", "reportx9", "u361099527_quizz");
-	
-	$sen ="SELECT count(*) FROM erabiltzailea WHERE Eposta LIKE '$_POST[Eposta]' AND Pasahitza LIKE '$_POST[Pasahitza]'";	
-	$ema=$esteka->query($sen);
-	
-	if($ema=)
+
 ?>
