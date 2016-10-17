@@ -15,6 +15,6 @@
 		$esteka->close();
 	}else{
 		echo "Eposta ez du LDAP@ikasle.ehu.e(u)s formatua.";
-		echo "<a href='signUp.html'> Atzerantz</a>";
+		echo "<a href='SignUp.html'> Atzerantz</a>";
 	}
 ?>

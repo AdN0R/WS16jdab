@@ -33,7 +33,7 @@
 			<input type="radio" name="Zailtasuna" value="5" >5<br />
 			<input type="radio" name="Zailtasuna" value="0" checked>Zehaztugabea<br /><br /><br />
 
-			<input class="botoia" type="button" value="Home" onclick="location.href='./layout.html';" />
+			<input class="botoia" type="button" value="Home" onclick="location.href='./Layout.html';" />
 			<input class="botoia" type="reset" value="Ezabatu" />
 			<input class="botoia" type="submit" value="Bidali" />
 		</form>

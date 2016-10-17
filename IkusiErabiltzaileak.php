@@ -1,5 +1,5 @@
 <?php
-	echo "<a href='signUp.html'> Atzerantz</a>";
+	echo "<a href='SignUp.html'> Atzerantz</a>";
 	$esteka = new mysqli("mysql.hostinger.es", "u361099527_u3610", "reportx9", "u361099527_quizz");
 	
 	$sen ="SELECT * FROM erabiltzailea";	

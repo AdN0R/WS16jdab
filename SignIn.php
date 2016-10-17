@@ -24,7 +24,7 @@
 			
 			Pasahitza:<br />
 			<input type="password" name="Pasahitza"><br /><br />
-			<input type="button" value="Atzerantz" onclick="location.href='./layout.html';">
+			<input type="button" value="Atzerantz" onclick="location.href='./Layout.html';">
 			<input type="submit" value="Bidali">
 			</form>
 		</center>
