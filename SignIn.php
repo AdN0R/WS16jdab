@@ -39,7 +39,7 @@
 				$ema=$esteka->query($sen);
 				
 				if($ema==1){
-					setcookie("User", $_POST['Eposta'], 1800, "./");
+					setcookie("User", $_POST['Eposta'], time()+1800, "/","http:/ws16jdab.esy.es",1);
 					header("Location: ./InsertQuestion.php");
 				}else{
 					echo "<center><font color='red'>Email hau ez dago erregistratua</font></center>";
