@@ -18,7 +18,7 @@
 	<body>
 		<center>
 			<h1 id="titulua">Autentikatu</h1><br />
-			<form id="fAutentikatu" name="fAutentikatu" action="SignIn.php" method="POST" action="SignIn.php">
+			<form id="fAutentikatu" name="fAutentikatu" method="POST" action="SignIn.php">
 			Eposta elektronikoa:<br />
 			<input type="text" name="Eposta" value="LDAP@ikasle.ehu.es"><br /><br />
 			
@@ -39,6 +39,7 @@
 				$ema=$esteka->query($sen);
 				
 				if($ema==1){
+					setcookie("User", $_POST['Eposta'], 1800, "./");
 					header("Location: ./InsertQuestion.php");
 				}else{
 					echo "<center><font color='red'>Email hau ez dago erregistratua</font></center>";
