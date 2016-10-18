@@ -31,20 +31,30 @@
 	</body>
 </html>
 <?php
-	if(isset($_POST['Eposta'])){
-		if (!filter_var($_POST['Eposta'], FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-z]{3,}[0-9]{3}(@ikasle\.ehu\.e)(s|us)$/"))) === false) {
+	if(isset($_POST[Eposta])){
+		if (!filter_var($_POST[Eposta], FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-z]{3,}[0-9]{3}(@ikasle\.ehu\.e)(s|us)$/"))) === false) {
 				$esteka = new mysqli("mysql.hostinger.es", "u361099527_u3610", "reportx9", "u361099527_quizz");
 	
-				$sen ="SELECT count(*) FROM erabiltzailea WHERE Eposta LIKE '$_POST[Eposta]' AND Pasahitza LIKE '$_POST[Pasahitza]'";	
+				$sen ="SELECT Pasahitza FROM erabiltzailea WHERE Eposta LIKE '$_POST[Eposta]'";
 				$ema=$esteka->query($sen);
-				
-				if($ema==1){
-					setcookie("User", $_POST['Eposta'], time()+1800, "/","http:/ws16jdab.esy.es",1);
-					header("Location: ./InsertQuestion.php");
-				}else{
-					echo "<center><font color='red'>Email hau ez dago erregistratua</font></center>";
+				$z = $ema->num_rows;
+				if($z==1){
+					$ema->data_seek(1);
+					$l= $ema->fetch_assoc();
+					$Pasahitza=$l['Pasahitza'];
+					if($Pasahitza == $_POST[Pasahitza]){
+						setcookie("User", $_POST[Eposta], time()+1800, "/");
+						header("Location: ./InsertQuestion.php");
+					}
+					else{
+						echo "<center><font color='red'>Errorea SignIn egiterakoan</font></center>";
+					}
 				}
-		}else{
+				else{
+					echo "<center><font color='red'>Errorea SignIn egiterakoan</font></center>";
+				}
+		}
+		else{
 			echo "<center><font color='red'>Emailaren formatoa txarto dago</font></center>";
 		}
 	}

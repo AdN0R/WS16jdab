@@ -41,7 +41,7 @@
 	</body>
 </html>
 <?php
-	if(isset($_POST['Erantzuna'])){
+	if(isset($_POST[Erantzuna]) && isset($_COOKIE[User])){
 		$esteka = new mysqli("mysql.hostinger.es", "u361099527_u3610", "reportx9", "u361099527_quizz");
 		$sen ="INSERT INTO galdera(Egilea,Galdera,Erantzuna,Zailtasuna) VALUES('$_COOKIE[User]', '$_POST[Galdera]', '$_POST[Erantzuna]', '$_POST[Zailtasuna]')";
 		if(!$esteka->query($sen)){
