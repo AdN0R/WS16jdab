@@ -19,7 +19,7 @@
 		<center>
 		<h1 id="titulua">Galdera gehitu</h1><br />
 		<form id="gGehitu" name="gGehitu" method="POST" action="InsertQuestion.php">
-			Materia: <input type="text" name="Materia"><br /><br />
+			Gaia: <input type="text" name="Gaia"><br /><br />
 			Galdera:<br />
 			<textarea name="Galdera" cols="30" rows="5"></textarea><br /><br /><br />
 			
@@ -48,7 +48,7 @@
 <?php
 	if(isset($_POST[Erantzuna]) && isset($_COOKIE[User])){
 		$esteka = new mysqli("mysql.hostinger.es", "u361099527_u3610", "reportx9", "u361099527_quizz");
-		$sen ="INSERT INTO galdera(Egilea,Materia,Galdera,Erantzuna,Zailtasuna) VALUES('$_COOKIE[User]', '$_POST[Materia]', '$_POST[Galdera]', '$_POST[Erantzuna]', '$_POST[Zailtasuna]')";
+		$sen ="INSERT INTO galdera(Egilea,Gaia,Galdera,Erantzuna,Zailtasuna) VALUES('$_COOKIE[User]', '$_POST[Gaia]', '$_POST[Galdera]', '$_POST[Erantzuna]', '$_POST[Zailtasuna]')";
 		if(!$esteka->query($sen)){
 			die('Errorea: ' . $esteka->error);		
 		}		
@@ -62,7 +62,7 @@
 		}
 		$item = $xml->addChild('assessmentItem');
 		$item->addAttribute('complexity', $_POST['Zailtasuna']);
-		$item->addAttribute('subject', $_POST['Materia']);
+		$item->addAttribute('subject', $_POST['Gaia']);
 		
 		$body = $item->addChild('itemBody');
 		$body->addChild('p', $_POST['Galdera']);
@@ -74,6 +74,6 @@
 		
 		echo "Galdera gehitu da!";
 		echo "<p> <a href='ShowQuestions.php'> Galderak ikusi</a></p><br />";
-		echo "<p> <a href='seeXMLQuestions.php'> Galderak XML-n ikusi </a></p>";
+		echo "<p> <a href='SeeXMLQuestions.php'> Galderak XML-n ikusi </a></p>";
 	}
 ?>

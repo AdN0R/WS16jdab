@@ -5,19 +5,20 @@
 	$sen ="SELECT * FROM galdera ORDER BY `Zenbakia` DESC";	
 	$ema=$esteka->query($sen);
 	
-	echo "<b><center>Datuak</center></b><br><br>";
-	echo "<table><tr><th>Zenbakia</th><th>Egilea</th><th>Materia</th><th>Galdera</th><th>Erantzuna</th><th>Zailtasuna</th></tr>"
-	for ($z = $ema->num_rows-1; $z>=0; $z--){
+	echo"<head><link rel='stylesheet' type='text/css' href='stylesPWS/style.css' /></head><body>";
+	echo "<b><center>Datu-baseko datuak</center></b><br><br>";
+	echo "<table style='width:100%'><tr><th>Zenbakia</th><th>Egilea</th><th>Gaia</th><th>Galdera</th><th>Erantzuna</th><th>Zailtasuna</th></tr>";
+	for($z = $ema->num_rows-1; $z>=0; $z--){
 		$ema->data_seek($z);
 		$l= $ema->fetch_assoc();
 		$Zenbakia=$l['Zenbakia'];
 		$Egilea=$l['Egilea'];
-		$Materia=$l['Materia'];
+		$Gaia=$l['Gaia'];
 		$Galdera=$l['Galdera'];
 		$Erantzuna=$l['Erantzuna'];
 		$Zailtasuna=$l['Zailtasuna'];
-		echo"<tr><td>$Zenbakia</td><td>$Egilea</td><td>$Materia</td><td>$Galdera</td><td>$Erantzuna</td><td>$Zailtasuna</td></tr>";	
+		echo"<tr><td>$Zenbakia</td><td>$Egilea</td><td>$Gaia</td><td>$Galdera</td><td>$Erantzuna</td><td>$Zailtasuna</td></tr>";	
 	}
-	echo "</table>"
+	echo "</table></body>";
 	$esteka->close();
 ?>
