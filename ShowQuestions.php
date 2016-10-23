@@ -6,15 +6,18 @@
 	$ema=$esteka->query($sen);
 	
 	echo "<b><center>Datuak</center></b><br><br>";
+	echo "<table><tr><th>Zenbakia</th><th>Egilea</th><th>Materia</th><th>Galdera</th><th>Erantzuna</th><th>Zailtasuna</th></tr>"
 	for ($z = $ema->num_rows-1; $z>=0; $z--){
 		$ema->data_seek($z);
 		$l= $ema->fetch_assoc();
 		$Zenbakia=$l['Zenbakia'];
 		$Egilea=$l['Egilea'];
+		$Materia=$l['Materia'];
 		$Galdera=$l['Galdera'];
 		$Erantzuna=$l['Erantzuna'];
 		$Zailtasuna=$l['Zailtasuna'];
-		echo"<b>$Zenbakia $Egilea</b>
-		<br>$Galdera<br>$Erantzuna<br>$Zailtasuna<br><br><br>";	}
+		echo"<tr><td>$Zenbakia</td><td>$Egilea</td><td>$Materia</td><td>$Galdera</td><td>$Erantzuna</td><td>$Zailtasuna</td></tr>";	
+	}
+	echo "</table>"
 	$esteka->close();
 ?>
