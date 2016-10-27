@@ -14,23 +14,19 @@
 			   href='stylesPWS/smartphone.css' />
 		
 		<script src="JS.js"></script>
-		<script type="text/javascript" language = "javascript">
+		<script type="text/javascript" language="javascript" >
 			xhttp = new XMLHttpRequest();
-			xhttp.onreadystatechange = function(){
-				if ((xhttp.readyState==4)&&(xhttp.status==200 )){
-					document.getElementById("galderadiv").innerHTML= xhttp.responseText;
-				}
-			};
-			function galderakIkusi(){
-				xhttp.open("POST","ErabiltzaileGalderak.php", true);
+			xhttp.onreadystatechange = function(){if((xhttp.readyState==4)&&(xhttp.status==200)){document.getElementById("galdiv").innerHTML=xhttp.responseText;}};
+			function galIku(){
+				xhttp.open("GET","ErabiltzaileGalderak.php", true);
 				xhttp.send();
 			}
 		</script>
-		</head>
+	</head>
 	<body>
 		<center>
 		<h1 id="titulua">Galdera gehitu</h1><br />
-		<form id="gGehitu" name="gGehitu" method="POST" action="InsertQuestion.php">
+		<form id="gGehitu" name="gGehitu" method="POST" action="handlingQuizes.php">
 			Gaia: <input type="text" name="Gaia"><br /><br />
 			Galdera:<br />
 			<textarea name="Galdera" cols="30" rows="5"></textarea><br /><br /><br />
@@ -53,12 +49,11 @@
 			<input class="botoia" type="button" value="Home" onclick="location.href='./Layout.html';" />
 			<input class="botoia" type="reset" value="Ezabatu" />
 			<input class="botoia" type="submit" value="Bidali" />
+			<br />
+			<input type="button" value="ErakutsiGalderak" onclick="galIku()" />
 		</form>
-		<br />
-		<input type="button" value="Erakutsi Galderak" onclick="galderakIkusi()" />
 		</center>
-		<div id ="galderadiv">			
-		</div>
+		<div id ="galdiv" ><p>Oli :D</p></div>
 	</body>
 </html>
 <?php
@@ -89,7 +84,7 @@
 		$xml->asXML('galderak.xml');
 		
 		echo "Galdera gehitu da!";
-		echo "<p> <a href='ShowQuestions.php'> Galderak ikusi</a></p><br />";
-		echo "<p> <a href='SeeXMLQuestions.php'> Galderak XML-n ikusi </a></p>";
+		echo "<p> <a href='ShowQuestions.php'> Datu-baseko galderak ikusi</a></p><br />";
+		echo "<p> <a href='SeeXMLQuestions.php'> XML-ko galderak ikusi </a></p>";
 	}
 ?>

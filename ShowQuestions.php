@@ -1,5 +1,5 @@
 <?php
-	echo "<a href='InsertQuestion.php'> Atzerantz</a>";
+	echo "<a href='handlingQuizes.php'> Atzerantz</a>";
 	$esteka = new mysqli("mysql.hostinger.es", "u396344456_1", "donosti16", "u396344456_quizz");
 	
 	$sen ="SELECT * FROM galdera ORDER BY `Zenbakia` DESC";	

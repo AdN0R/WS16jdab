@@ -5,7 +5,7 @@
 		exit;
 	}
 	echo"<head><link rel='stylesheet' type='text/css' href='stylesPWS/style.css' /></head><body>";
-	echo "<a href='InsertQuestion.php'> Atzerantz</a>";
+	echo "<a href='handlingQuizes.php'> Atzerantz</a>";
 	echo "<b><center>XML fitxategiko datuak</center></b><br><br>";
 	echo "<table style='width:100%'><tr><th>Galdera</th><th>Konplexutasuna</th><th>Gaia</th></tr>";
 	foreach($xml->children() as $assessmentItem){
