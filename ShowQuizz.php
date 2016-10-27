@@ -1,6 +1,6 @@
 <?php
 	echo "<a href='./Layout.html'> Atzerantz</a>";
-	$esteka = new mysqli("mysql.hostinger.es", "u361099527_u3610", "reportx9", "u361099527_quizz");
+	$esteka = new mysqli("mysql.hostinger.es", "u396344456_1", "donosti16", "u396344456_quizz");
 	
 	$sen ="SELECT Galdera,Zailtasuna FROM galdera ORDER BY `Zenbakia` DESC";	
 	$ema=$esteka->query($sen);

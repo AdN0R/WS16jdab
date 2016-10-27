@@ -1,8 +1,7 @@
 <?php
-	echo "<a href='InsertQuestion.php'> Atzerantz</a>";
 	$esteka = new mysqli("mysql.hostinger.es", "u396344456_1", "donosti16", "u396344456_quizz");
 	
-	$sen ="SELECT * FROM galdera ORDER BY `Zenbakia` DESC";	
+	$sen ="SELECT * FROM galdera WHERE Egilea LIKE '$_COOKIE[User]' ORDER BY `Zenbakia` DESC";	
 	$ema=$esteka->query($sen);
 	
 	echo"<head><link rel='stylesheet' type='text/css' href='stylesPWS/style.css' /></head><body>";

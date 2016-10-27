@@ -14,6 +14,18 @@
 			   href='stylesPWS/smartphone.css' />
 		
 		<script src="JS.js"></script>
+		<script type="text/javascript" language = "javascript">
+			xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function(){
+				if ((xhttp.readyState==4)&&(xhttp.status==200 )){
+					document.getElementById("galderadiv").innerHTML= xhttp.responseText;
+				}
+			};
+			function galderakIkusi(){
+				xhttp.open("POST","ErabiltzaileGalderak.php", true);
+				xhttp.send();
+			}
+		</script>
 		</head>
 	<body>
 		<center>
@@ -42,7 +54,11 @@
 			<input class="botoia" type="reset" value="Ezabatu" />
 			<input class="botoia" type="submit" value="Bidali" />
 		</form>
+		<br />
+		<input type="button" value="Erakutsi Galderak" onclick="galderakIkusi()" />
 		</center>
+		<div id ="galderadiv">			
+		</div>
 	</body>
 </html>
 <?php
