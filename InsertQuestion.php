@@ -40,7 +40,8 @@
 			<br /><br /><br />
 			<input class="botoia" type="button" value="Home" onclick="location.href='./Layout.html';" />
 			<input class="botoia" type="reset" value="Ezabatu" />
-			<input class="botoia" type="submit" value="Bidali" />
+			<input class="botoia" type="submit" value="Bidali" /><br />
+			<input class="botoia" type="button" value="Ikusi HandlingQuizes" onclick="location.href='./handlingQuizes.php';" />
 		</form>
 		</center>
 	</body>

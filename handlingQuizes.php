@@ -15,49 +15,59 @@
 		
 		<script src="JS.js"></script>
 		<script type="text/javascript" language="javascript" >
+			
 			xhttp = new XMLHttpRequest();
-			xhttp.onreadystatechange = function(){if((xhttp.readyState==4)&&(xhttp.status==200)){document.getElementById("galdiv").innerHTML=xhttp.responseText;}};
+			xhttp.onreadystatechange = function(){
+				if((xhttp.readyState==4)&&(xhttp.status==200)){
+					document.getElementById("galdiv").innerHTML=xhttp.responseText;
+					}
+			};
 			function galIku(){
+				document.getElementById("txertatu").innerHTML= "";
 				xhttp.open("GET","ErabiltzaileGalderak.php", true);
 				xhttp.send();
 			}
 		</script>
 	</head>
 	<body>
-		<center>
-		<h1 id="titulua">Galdera gehitu</h1><br />
-		<form id="gGehitu" name="gGehitu" method="POST" action="handlingQuizes.php">
-			Gaia: <input type="text" name="Gaia"><br /><br />
-			Galdera:<br />
-			<textarea name="Galdera" cols="30" rows="5"></textarea><br /><br /><br />
-			
-			Erantzuna:<br />
-			<textarea name="Erantzuna" cols="30" rows="5"> </textarea><br /><br /><br />
+		<div>
+			<center>
+			<h1 id="titulua">HQ: Galdera gehitu</h1><br />
+			<form id="gGehitu" name="gGehitu" method="POST" action="handlingQuizes.php">
+				Gaia: <input type="text" name="Gaia"><br /><br />
+				Galdera:<br />
+				<textarea name="Galdera" cols="30" rows="5"></textarea><br /><br /><br />
+				
+				Erantzuna:<br />
+				<textarea name="Erantzuna" cols="30" rows="5"> </textarea><br /><br /><br />
 
-			<fieldset style="display: inline-block;">
-			<legend align="center">Zailtasuna</legend>
-			<br/>
-			1<input type="radio" name="Zailtasuna" value="1">
-			2<input type="radio" name="Zailtasuna" value="2">
-			3<input type="radio" name="Zailtasuna" value="3">
-			4<input type="radio" name="Zailtasuna" value="4">
-			5<input type="radio" name="Zailtasuna" value="5">
-			Zehaztugabea<input type="radio" name="Zailtasuna" value="0" checked>
-			</fieldset>
+				<fieldset style="display: inline-block;">
+				<legend align="center">Zailtasuna</legend>
+				<br/>
+				1<input type="radio" name="Zailtasuna" value="1">
+				2<input type="radio" name="Zailtasuna" value="2">
+				3<input type="radio" name="Zailtasuna" value="3">
+				4<input type="radio" name="Zailtasuna" value="4">
+				5<input type="radio" name="Zailtasuna" value="5">
+				Zehaztugabea<input type="radio" name="Zailtasuna" value="0" checked>
+				</fieldset>
 
-			<br /><br /><br />
-			<input class="botoia" type="button" value="Home" onclick="location.href='./Layout.html';" />
-			<input class="botoia" type="reset" value="Ezabatu" />
-			<input class="botoia" type="submit" value="Bidali" />
-			<br />
-			<input type="button" value="ErakutsiGalderak" onclick="galIku()" />
-		</form>
-		</center>
-		<div id ="galdiv" ><p>Oli :D</p></div>
+				<br /><br /><br />
+				<input class="botoia" type="button" value="Home" onclick="location.href='./Layout.html';" />
+				<input class="botoia" type="reset" value="Ezabatu" />
+				<input class="botoia" type="submit" value="Bidali" />
+				<br />
+				<input class="botoia" type="button" value="Ikusi zure galderak" onclick="galIku()" />
+			</form>
+			</center>
+		</div>
+		<div id="txertatu"></div>
+		<div id="galdiv" ></div>
 	</body>
 </html>
 <?php
 	if(isset($_POST[Erantzuna]) && isset($_COOKIE[User])){
+		echo '<script>document.getElementById("galdiv").innerHTML= "";</script>';
 		$esteka = new mysqli("mysql.hostinger.es", "u396344456_1", "donosti16", "u396344456_quizz");
 		$sen ="INSERT INTO galdera(Egilea,Gaia,Galdera,Erantzuna,Zailtasuna) VALUES('$_COOKIE[User]', '$_POST[Gaia]', '$_POST[Galdera]', '$_POST[Erantzuna]', '$_POST[Zailtasuna]')";
 		if(!$esteka->query($sen)){
@@ -68,7 +78,7 @@
 		//Gorde Galdera XML-n
 		$xml = simplexml_load_file('galderak.xml','SimpleXMLElement', LIBXML_NOWARNING);
 		if (!$xml){
-			echo '<script>alert("Errorea XML txertaketan")</script>';
+			echo '<script>document.getElementById("txertatu").innerHTML= "Errorea XML txertaketan";</script>';
 			exit;
 		}
 		$item = $xml->addChild('assessmentItem');
@@ -83,8 +93,8 @@
 
 		$xml->asXML('galderak.xml');
 		
-		echo "Galdera gehitu da!";
+		echo "<script>document.getElementById('txertatu').innerHTML= \"Galdera gehitu da!";
 		echo "<p> <a href='ShowQuestions.php'> Datu-baseko galderak ikusi</a></p><br />";
-		echo "<p> <a href='SeeXMLQuestions.php'> XML-ko galderak ikusi </a></p>";
+		echo "<p> <a href='SeeXMLQuestions.php'> XML-ko galderak ikusi </a></p>\";</script>";
 	}
 ?>

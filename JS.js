@@ -55,6 +55,7 @@ var msg = "";
 	}
 }
 
+
 function readURL(){
    var file = document.getElementById("getArg").files[0];
    var reader = new FileReader();

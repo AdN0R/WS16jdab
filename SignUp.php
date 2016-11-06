@@ -29,10 +29,10 @@
 			<input type="text" name="Abizena2"><br /><br />
 			
 			Eposta elektronikoa: (*)<br />
-			<input type="text" name="Eposta" value="LDAP@ikasle.ehu.es"><br /><br />
+			<input type="text" name="Eposta" id="Eposta" value="<?php echo $_POST['Eposta']?>" readonly><br /><br />
 			
 			Pasahitza: (*)<br />
-			<input type="password" name="Pasahitza"><br /><br />
+			<input type="password" name="Pasahitza" id="Pasahitza" value="<?php echo $_POST['Pasahitza']?>" readonly><br /><br />
 			
 			Telefono zenbakia: (*)<br />
 			<input type="text" name="Telefonoa"><br /><br />
@@ -51,7 +51,7 @@
 			Intereseko erremintak:<br />
 			<textarea name="Erremintak"> </textarea><br /><br />
 			
-			<input class="botoia" type="button" value="Atzerantz" onclick="location.href='./Layout.html';" />
+			<input class="botoia" type="button" value="Atzerantz" onclick="location.href='./SimpleReg.html';" />
 			<input class="botoia" type="reset" value="Ezabatu" />
 			<input class="botoia" type="submit" value="Bidali" />
 		</form>
