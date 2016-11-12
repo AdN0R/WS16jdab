@@ -31,7 +31,7 @@
 	</body>
 </html>
 <?php
-	if(isset($_POST[Eposta])){
+	if(isset($_POST[Eposta])){		
 		if (!filter_var($_POST[Eposta], FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-z]{3,}[0-9]{3}(@ikasle\.ehu\.e)(s|us)$/"))) === false) {
 				$esteka = new mysqli("mysql.hostinger.es", "u396344456_1", "donosti16", "u396344456_quizz");
 	
@@ -43,8 +43,10 @@
 					$l= $ema->fetch_assoc();
 					$Pasahitza=$l['Pasahitza'];
 					if($Pasahitza == $_POST[Pasahitza]){
-						setcookie("User", $_POST[Eposta], time()+1800, "/");
-						header("Location: ./InsertQuestion.php");
+						session_start();
+						$_SESSION["User"] = $_POST[Eposta];
+						$_SESSION["Irakasle"] = "EZ";
+						header("Location: ./handlingQuizes.php");
 					}
 					else{
 						echo "<center><font color='red'>Errorea SignIn egiterakoan</font></center>";
@@ -53,8 +55,29 @@
 				else{
 					echo "<center><font color='red'>Errorea SignIn egiterakoan</font></center>";
 				}
-		}
-		else{
+		}else if(!filter_var($_POST[Eposta], FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-z]{3,}[0-9]{3}(@ehu\.e)(s|us)$/"))) === false){
+			$esteka = new mysqli("mysql.hostinger.es", "u396344456_1", "donosti16", "u396344456_quizz");
+	
+			$sen ="SELECT Pasahitza FROM erabiltzailea WHERE Eposta LIKE '$_POST[Eposta]'";
+			$ema=$esteka->query($sen);
+			$z = $ema->num_rows;
+			if($z==1){
+				$ema->data_seek(1);
+				$l= $ema->fetch_assoc();
+				$Pasahitza=$l['Pasahitza'];
+				if($Pasahitza == $_POST[Pasahitza]){
+					$_SESSION["User"] = $_POST[Eposta];
+					$_SESSION["Irakasle"] = "BAI";
+					header("Location: ./reviewingQuizes.php");
+				}
+				else{
+					echo "<center><font color='red'>Errorea SignIn egiterakoan</font></center>";
+				}
+			}
+			else{
+				echo "<center><font color='red'>Errorea SignIn egiterakoan</font></center>";
+			}
+		}else{
 			echo "<center><font color='red'>Emailaren formatoa txarto dago</font></center>";
 		}
 	}

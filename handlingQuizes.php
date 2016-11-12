@@ -36,23 +36,23 @@
 			<form id="gGehitu" name="gGehitu" method="POST" action="handlingQuizes.php">
 				Gaia: <input type="text" name="Gaia"><br /><br />
 				Galdera:<br />
-				<textarea name="Galdera" cols="30" rows="5"></textarea><br /><br /><br />
+				<textarea name="Galdera" cols="30" rows="4"></textarea><br /><br />
 				
 				Erantzuna:<br />
-				<textarea name="Erantzuna" cols="30" rows="5"> </textarea><br /><br /><br />
+				<textarea name="Erantzuna" cols="30" rows="4"> </textarea><br /><br />
 
 				<fieldset style="display: inline-block;">
-				<legend align="center">Zailtasuna</legend>
-				<br/>
-				1<input type="radio" name="Zailtasuna" value="1">
-				2<input type="radio" name="Zailtasuna" value="2">
-				3<input type="radio" name="Zailtasuna" value="3">
-				4<input type="radio" name="Zailtasuna" value="4">
-				5<input type="radio" name="Zailtasuna" value="5">
-				Zehaztugabea<input type="radio" name="Zailtasuna" value="0" checked>
+					<legend align="center">Zailtasuna</legend>
+					<br/>
+					1<input type="radio" name="Zailtasuna" value="1">
+					2<input type="radio" name="Zailtasuna" value="2">
+					3<input type="radio" name="Zailtasuna" value="3">
+					4<input type="radio" name="Zailtasuna" value="4">
+					5<input type="radio" name="Zailtasuna" value="5">
+					Zehaztugabea<input type="radio" name="Zailtasuna" value="0" checked>
 				</fieldset>
 
-				<br /><br /><br />
+				<br /><br />
 				<input class="botoia" type="button" value="Home" onclick="location.href='./Layout.html';" />
 				<input class="botoia" type="reset" value="Ezabatu" />
 				<input class="botoia" type="submit" value="Bidali" />
@@ -66,10 +66,10 @@
 	</body>
 </html>
 <?php
-	if(isset($_POST[Erantzuna]) && isset($_COOKIE[User])){
+	if(isset($_POST[Erantzuna]) && isset($_SESSION[User])){
 		echo '<script>document.getElementById("galdiv").innerHTML= "";</script>';
 		$esteka = new mysqli("mysql.hostinger.es", "u396344456_1", "donosti16", "u396344456_quizz");
-		$sen ="INSERT INTO galdera(Egilea,Gaia,Galdera,Erantzuna,Zailtasuna) VALUES('$_COOKIE[User]', '$_POST[Gaia]', '$_POST[Galdera]', '$_POST[Erantzuna]', '$_POST[Zailtasuna]')";
+		$sen ="INSERT INTO galdera(Egilea,Gaia,Galdera,Erantzuna,Zailtasuna) VALUES('$_SESSION[User]', '$_POST[Gaia]', '$_POST[Galdera]', '$_POST[Erantzuna]', '$_POST[Zailtasuna]')";
 		if(!$esteka->query($sen)){
 			die('Errorea: ' . $esteka->error);		
 		}		

@@ -31,16 +31,29 @@
 			
 			function passKonprobatu(){
 				var pass = document.getElementById("Pasahitza").value;
-				xhttp2.open("POST","PasswordKonprobatu.php", true);
-				xhttp2.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-				xhttp2.send("Pass="+pass);
+				if (pass.trim().length < 6){
+					document.getElementById("dpasahitza").innerHTML= "Pasahitza 6ko luzera edo gehiago eduki behar du.";
+				}else{
+					xhttp2.open("POST","PasswordKonprobatu.php", true);
+					xhttp2.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+					xhttp2.send("Pass="+pass);
+				}
+			}
+			
+			function passBerdinak(){
+				var p1 = document.getElementById("Pasahitza").value;
+				var p2 = document.getElementById("Pasahitza2").value;
+				if (p1.localeCompare(p2) != 0){
+					document.getElementById("dpasahitza2").innerHTML= "<span style='color:red'>Pasahitzak berdinak izan behar dira</span>";
+				}else{
+					document.getElementById("dpasahitza2").innerHTML= "";
+				}
 			}
 			
 			function konp(){
-				if((document.getElementById("dpasahitza").innerHTML.trim() === "BALIOZKOA") && (document.getElementById("dposta").innerHTML.trim() === "BAI")){
+				if((document.getElementById("dpasahitza").innerHTML.trim() === "BALIOZKOA") && (document.getElementById("dposta").innerHTML.trim() === "BAI") && (document.getElementById("dpasahitza2").innerHTML.trim() === "")){
 					return true;
-				}
-				else{
+				}else{
 					return false;
 				}
 			}
@@ -58,16 +71,20 @@
 				Pasahitza:<br />
 				<input type="password" id="Pasahitza" name="Pasahitza" onblur="passKonprobatu()" ><br /><br />
 				
+				Errepikatu Pasahitza:<br />
+				<input type="password" id="Pasahitza2" name="Pasahitza2" onblur="passBerdinak()" ><br /><br />
+				
 				<input type="button" value="Atzerantz" onclick="location.href='./Layout.html';">
 				<input type="submit" value="Bidali">
 			</form>
 
-			<br /> <br />
+			<br /><br />
 			
 			Postaren balidazioa:  
 			<div id="dposta"></div>
 			Pasahitzaren balidazioa:  
 			<div id="dpasahitza"></div>
+			<div id="dpasahitza2"></div>
 		</center>
 	</body>
 </html>

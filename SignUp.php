@@ -18,7 +18,7 @@
 	<body>
 		<center>
 		<h1 id="titulua"> Formularioa</h1><br />
-		<form id="erregistro" name="erregistro" onSubmit="return balioztatu()" method="POST" action="Enroll.php">
+		<form id="erregistro" name="erregistro" onSubmit="return balioztatu()" method="POST" action="SignUp.php">
 			Izena: (*)<br />
 			<input type="text" name="Izena"><br /><br />
 			
@@ -58,3 +58,18 @@
 		</center>
 	</body>
 </html>
+
+<?php
+	if(isset($_POST[Eposta])){
+		$esteka = new mysqli("mysql.hostinger.es", "u396344456_1", "donosti16", "u396344456_quizz");
+			
+		$sql = "INSERT INTO erabiltzailea VALUES('$_POST[Izena]', '$_POST[Abizena1]', '$_POST[Abizena2]', '$_POST[Eposta]', '$_POST[Pasahitza]', '$_POST[Telefonoa]', '$_POST[Espezialitatea]', '$_POST[Teknologiak]', '$_POST[Erremintak]')";	
+		if(!$esteka->query($sql)){
+			die('Errorea: ' . $esteka->error);		
+		}
+
+		$esteka->close();
+		echo "<script>alert('Erregistro bat gehitu da!');</script>";
+		header("Location: ./SignIn.php");
+	}
+?>
