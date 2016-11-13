@@ -7,13 +7,12 @@
 			die('Errorea: ' . $esteka->error);		
 		}
 		
-		echo "<p> Aldaketa egin da datu basean. </p>";
-		echo "<p> <a href='reviewingQuizzes.php'> Jarraitu </a> </p>";
+		echo "<script>alert(\"Aldaketa egin da datu basean.\"); window.location = \"http://wsjdab.esy.es/reviewingQuizzes.php\";</script>";
 		
 		$esteka->close();
 		
 	}else{
-		echo "<p> Irakasle moduan logeatu behar zara </p>";
+		echo "<script>alert(\"Irakasle moduan logeatu behar zara.\"); window.location = \"http://wsjdab.esy.es/Layout.html\";</script>";
 	}
-	
+
 ?>
