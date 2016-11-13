@@ -29,7 +29,7 @@
 			}
 		</script>
 	</head>
-	<body>
+	<body id="hqBody">
 		<div>
 			<center>
 			<h1 id="titulua">HQ: Galdera gehitu</h1><br />
@@ -66,35 +66,38 @@
 	</body>
 </html>
 <?php
-	if(isset($_POST[Erantzuna]) && isset($_SESSION[User])){
-		echo '<script>document.getElementById("galdiv").innerHTML= "";</script>';
-		$esteka = new mysqli("mysql.hostinger.es", "u396344456_1", "donosti16", "u396344456_quizz");
-		$sen ="INSERT INTO galdera(Egilea,Gaia,Galdera,Erantzuna,Zailtasuna) VALUES('$_SESSION[User]', '$_POST[Gaia]', '$_POST[Galdera]', '$_POST[Erantzuna]', '$_POST[Zailtasuna]')";
-		if(!$esteka->query($sen)){
-			die('Errorea: ' . $esteka->error);		
-		}		
-		$esteka->close();
-		
-		//Gorde Galdera XML-n
-		$xml = simplexml_load_file('galderak.xml','SimpleXMLElement', LIBXML_NOWARNING);
-		if (!$xml){
-			echo '<script>document.getElementById("txertatu").innerHTML= "Errorea XML txertaketan";</script>';
-			exit;
-		}
-		$item = $xml->addChild('assessmentItem');
-		$item->addAttribute('complexity', $_POST['Zailtasuna']);
-		$item->addAttribute('subject', $_POST['Gaia']);
-		
-		$body = $item->addChild('itemBody');
-		$body->addChild('p', $_POST['Galdera']);
-		
-		$response = $item->addChild('correctResponse');
-		$response->addChild('value', $_POST['Erantzuna']);
+	session_start();
+	if(isset($_SESSION[User]) && $_SESSION[Irakasle] == "EZ"){
+		if(isset($_POST[Erantzuna])){
+			echo '<script>document.getElementById("galdiv").innerHTML= "";</script>';
+			$esteka = new mysqli("mysql.hostinger.es", "u396344456_1", "donosti16", "u396344456_quizz");
+			$sen ="INSERT INTO galdera(Egilea,Gaia,Galdera,Erantzuna,Zailtasuna) VALUES('$_SESSION[User]', '$_POST[Gaia]', '$_POST[Galdera]', '$_POST[Erantzuna]', '$_POST[Zailtasuna]')";
+			if(!$esteka->query($sen)){
+				die('Errorea: ' . $esteka->error);		
+			}		
+			$esteka->close();
+			
+			//Gorde Galdera XML-n
+			$xml = simplexml_load_file('galderak.xml','SimpleXMLElement', LIBXML_NOWARNING);
+			if (!$xml){
+				echo '<script>document.getElementById("txertatu").innerHTML= "Errorea XML txertaketan";</script>';
+				exit;
+			}
+			$item = $xml->addChild('assessmentItem');
+			$item->addAttribute('complexity', $_POST['Zailtasuna']);
+			$item->addAttribute('subject', $_POST['Gaia']);
+			
+			$body = $item->addChild('itemBody');
+			$body->addChild('p', $_POST['Galdera']);
+			
+			$response = $item->addChild('correctResponse');
+			$response->addChild('value', $_POST['Erantzuna']);
 
-		$xml->asXML('galderak.xml');
-		
-		echo "<script>document.getElementById('txertatu').innerHTML= \"Galdera gehitu da!";
-		echo "<p> <a href='ShowQuestions.php'> Datu-baseko galderak ikusi</a></p><br />";
-		echo "<p> <a href='SeeXMLQuestions.php'> XML-ko galderak ikusi </a></p>\";</script>";
+			$xml->asXML('galderak.xml');
+			
+			echo "<script>document.getElementById('txertatu').innerHTML= \"Galdera gehitu da!\";</script>";
+		}
+	}else{
+		echo "<script>document.getElementById('hqBody').innerHTML = '<center><h2 style=\"color: red\">Ikasle moduan Logeatu behar zara</h2></center>';</script>";
 	}
 ?>

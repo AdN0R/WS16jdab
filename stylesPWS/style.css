@@ -42,10 +42,19 @@ nav span             			{ margin: 0px 10px 0px 0px;
     max-height: 300px;
 }
 
+.lerroa{
+	cursor: pointer;
+}
+
+.lerroa:hover{
+	color: blue;
+}
+
+
 table{
 	font-family: arial, sans-serif;
 	border-collapse: collapse;
-    width: 100%;
+    
 }
 td, th{
 	border: 1px solid #dddddd;

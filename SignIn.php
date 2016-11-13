@@ -66,9 +66,10 @@
 				$l= $ema->fetch_assoc();
 				$Pasahitza=$l['Pasahitza'];
 				if($Pasahitza == $_POST[Pasahitza]){
+					session_start();
 					$_SESSION["User"] = $_POST[Eposta];
 					$_SESSION["Irakasle"] = "BAI";
-					header("Location: ./reviewingQuizes.php");
+					header("Location: ./reviewingQuizzes.php");
 				}
 				else{
 					echo "<center><font color='red'>Errorea SignIn egiterakoan</font></center>";
