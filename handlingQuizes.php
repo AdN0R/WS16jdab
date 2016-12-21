@@ -2,16 +2,13 @@
 <html>
 	<head>
 		<meta name="tipo_contenido" content="text/html;" http-equiv="content-type" charset="utf-8">
-		<title>Quizzes</title>
-		<link rel='stylesheet' type='text/css' href='stylesPWS/style.css' />
-		<link rel='stylesheet' 
-			   type='text/css' 
-			   media='only screen and (min-width: 530px) and (min-device-width: 481px)'
-			   href='stylesPWS/wide.css' />
-		<link rel='stylesheet' 
-			   type='text/css' 
-			   media='only screen and (max-width: 480px)'
-			   href='stylesPWS/smartphone.css' />
+		<meta name="viewport" content="width=device-width, user-scalable=false;">
+		<title>Quiz - Handle</title>
+		<link href="./bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
+		<link href="./css/est.css" rel="stylesheet">
+		<script src="./bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script src="./bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 		
 		<script src="JS.js"></script>
 		<script type="text/javascript" language="javascript" >
@@ -29,40 +26,80 @@
 			}
 		</script>
 	</head>
-	<body id="hqBody">
-		<div>
-			<center>
-			<h1 id="titulua">HQ: Galdera gehitu</h1><br />
-			<form id="gGehitu" name="gGehitu" method="POST" action="handlingQuizes.php">
-				Gaia: <input type="text" name="Gaia"><br /><br />
-				Galdera:<br />
-				<textarea name="Galdera" cols="30" rows="4"></textarea><br /><br />
-				
-				Erantzuna:<br />
-				<textarea name="Erantzuna" cols="30" rows="4"> </textarea><br /><br />
-
-				<fieldset style="display: inline-block;">
-					<legend align="center">Zailtasuna</legend>
-					<br/>
-					1<input type="radio" name="Zailtasuna" value="1">
-					2<input type="radio" name="Zailtasuna" value="2">
-					3<input type="radio" name="Zailtasuna" value="3">
-					4<input type="radio" name="Zailtasuna" value="4">
-					5<input type="radio" name="Zailtasuna" value="5">
-					Zehaztugabea<input type="radio" name="Zailtasuna" value="0" checked>
-				</fieldset>
-
-				<br /><br />
-				<input class="botoia" type="button" value="Home" onclick="location.href='./Layout.html';" />
-				<input class="botoia" type="reset" value="Ezabatu" />
-				<input class="botoia" type="submit" value="Bidali" />
-				<br />
-				<input class="botoia" type="button" value="Ikusi zure galderak" onclick="galIku()" />
-			</form>
-			</center>
+	<body>
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+						<span class="sr-only">Nabigazio menua</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="./Layout.php">My Quiz</a>
+				</div>
+				<div id="navbar" class="collapse navbar-collapse">
+					<ul class="nav navbar-nav">
+						<li><a href="./ShowQuizz.php">Quizzes</a></li>
+						<?php session_start(); if(!isset($_SESSION[User])){echo "<li><a href='./SignIn.php'>Sign In</a></li>";}?>
+						<?php if(!isset($_SESSION[User])){echo "<li><a href='./SimpleReg.php'>Sign Up</a></li>";}?>
+						<?php if(isset($_SESSION[User]) && $_SESSION["Irakasle"] == "BAI"){echo "<li><a href='./reviewingQuizzes.php'>Review</a></li>";}?>
+						<?php if(isset($_SESSION[User]) && $_SESSION["Irakasle"] == "EZ"){echo "<li class='active'><a href='./handlingQuizes.php'>Handle</a></li>";}?>
+						<?php if(isset($_SESSION[User])){echo "<li><a href='./LogOut.php'>LogOut</a></li>";}?>
+						<li><a href="./Credits.php">Credits</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		
+		<div class="container">
+			<div class="jumbotron"><h2>Erabiltzaile kontuaren galderen kudeaketa</h2></div>
 		</div>
-		<div id="txertatu"></div>
-		<div id="galdiv" ></div>
+		<div id="hqBody">
+			<div>
+				<center>
+				<form id="gGehitu" name="gGehitu" method="POST" action="handlingQuizes.php">
+					<div class="row">
+						<div class="form-group col-sm-offset-4 col-sm-4">
+							<label for="Gaia">Gaia:</label>
+							<input type="text" class="form-control" id="Gaia" name="Gaia" placeholder="Sartu gaia">
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group col-sm-offset-4 col-sm-4">
+							<label for="Galdera">Galdera:</label>
+							<textarea class="form-control" rows="4" id="Galdera" name="Galdera" placeholder="Sartu zure galdera"></textarea>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group col-sm-offset-4 col-sm-4">
+							<label for="Erantzuna">Erantzuna:</label>
+							<textarea class="form-control" rows="4" id="Erantzuna" name="Erantzuna" placeholder="Sartu galderaren erantzuna"></textarea>
+						</div>
+					</div>
+					<div class="row">
+						<div class="radio">
+							<label for="Zailtasuna"><strong>Zailtasuna:</strong></label><br />
+							<label class="radio-inline"><input type="radio" name="Zailtasuna" value="1">1</label>
+							<label class="radio-inline"><input type="radio" name="Zailtasuna" value="2">2</label>
+							<label class="radio-inline"><input type="radio" name="Zailtasuna" value="3">3</label>
+							<label class="radio-inline"><input type="radio" name="Zailtasuna" value="4">4</label>
+							<label class="radio-inline"><input type="radio" name="Zailtasuna" value="5">5</label>
+							<label class="radio-inline"><input type="radio" name="Zailtasuna" value="0" checked>Zehaztugabea</label>
+						</div>
+					</div>
+
+					<br /><br />
+					<button type="reset" class="btn btn-default">Ezabatu</button>
+					<button type="submit" class="btn btn-default">Bidali</button>
+					<br />
+					<button type="button" class="btn btn-default" onclick="galIku()">Ikusi zure galderak</button>
+				</form>
+				</center>
+			</div>
+			<div id="txertatu"></div>
+			<div id="galdiv" ></div>
+		</div>
 	</body>
 </html>
 <?php

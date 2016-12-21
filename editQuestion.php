@@ -2,49 +2,86 @@
 <html>
 	<head>
 		<meta name="tipo_contenido" content="text/html;" http-equiv="content-type" charset="utf-8">
-		<title>Quizzes</title>
-		<link rel='stylesheet' type='text/css' href='stylesPWS/style.css' />
-		<link rel='stylesheet' 
-			   type='text/css' 
-			   media='only screen and (min-width: 530px) and (min-device-width: 481px)'
-			   href='stylesPWS/wide.css' />
-		<link rel='stylesheet' 
-			   type='text/css' 
-			   media='only screen and (max-width: 480px)'
-			   href='stylesPWS/smartphone.css' />
+		<meta name="viewport" content="width=device-width, user-scalable=false;">
+		<title>Quiz - Edit</title>
+		<link href="./bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
+		<link href="./css/est.css" rel="stylesheet">
+		<script src="./bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script src="./bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 		
 		<script src="JS.js"></script>
 	</head>
-	<body id="eqBody">
-		<center>
-			<br /><h2>Edita ezazu galdera</h2><br />
-			<input class="botoia" type="button" value="Atzerantz" onclick="location.href='./reviewingQuizzes.php';" />
-			<input class="botoia" type="button" value="Home" onclick="location.href='./Layout.html';" />
-			<form name="gAldatu" method="POST" action="makeChanges.php">
-			Gaia: <input id="gaia" type="text" name="Gaia"><br /><br />
-				Galdera:<br />
-				<textarea id="galdera" name="Galdera" cols="30" rows="4"></textarea><br /><br />
-				
-				Erantzuna:<br />
-				<textarea id="erantzuna" name="Erantzuna" cols="30" rows="4"></textarea><br /><br />
+	<body>
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+						<span class="sr-only">Nabigazio menua</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="./Layout.php">My Quiz</a>
+				</div>
+				<div id="navbar" class="collapse navbar-collapse">
+					<ul class="nav navbar-nav">
+						<li><a href="./ShowQuizz.php">Quizzes</a></li>
+						<?php session_start(); if(!isset($_SESSION[User])){echo "<li><a href='./SignIn.php'>Sign In</a></li>";}?>
+						<?php if(!isset($_SESSION[User])){echo "<li><a href='./SimpleReg.php'>Sign Up</a></li>";}?>
+						<?php if(isset($_SESSION[User]) && $_SESSION["Irakasle"] == "BAI"){echo "<li><a href='./reviewingQuizzes.php'>Review</a></li>";}?>
+						<?php if(isset($_SESSION[User]) && $_SESSION["Irakasle"] == "EZ"){echo "<li><a href='./handlingQuizes.php'>Handle</a></li>";}?>
+						<?php if(isset($_SESSION[User])){echo "<li><a href='./LogOut.php'>LogOut</a></li>";}?>
+						<li><a href="./Credits.php">Credits</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		
+		<div class="container">
+			<div class="jumbotron"><h2>Galdera editatu</h2></div>
+		</div>
+		
+		<div id="eqBody">
+			<center>
+				<form name="gAldatu" method="POST" action="makeChanges.php">
+					<div class="row">
+						<div class="form-group col-sm-offset-4 col-sm-4">
+							<label for="Gaia">Gaia:</label>
+							<input type="text" class="form-control" id="Gaia" name="Gaia" placeholder="Sartu gaia">
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group col-sm-offset-4 col-sm-4">
+							<label for="Galdera">Galdera:</label>
+							<textarea class="form-control" rows="4" id="Galdera" name="Galdera" placeholder="Sartu zure galdera"></textarea>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group col-sm-offset-4 col-sm-4">
+							<label for="Erantzuna">Erantzuna:</label>
+							<textarea class="form-control" rows="4" id="Erantzuna" name="Erantzuna" placeholder="Sartu galderaren erantzuna"></textarea>
+						</div>
+					</div>
+					<div class="row">
+						<div class="radio">
+							<label for="Zailtasuna"><strong>Zailtasuna:</strong></label><br />
+							<label class="radio-inline"><input type="radio" name="Zailtasuna" id="1" value="1">1</label>
+							<label class="radio-inline"><input type="radio" name="Zailtasuna" id="2" value="2">2</label>
+							<label class="radio-inline"><input type="radio" name="Zailtasuna" id="3" value="3">3</label>
+							<label class="radio-inline"><input type="radio" name="Zailtasuna" id="4" value="4">4</label>
+							<label class="radio-inline"><input type="radio" name="Zailtasuna" id="5" value="5">5</label>
+							<label class="radio-inline"><input type="radio" name="Zailtasuna" id="zehaztugabe" value="0" checked>Zehaztugabea</label>
+						</div>
+					</div>
 
-				<fieldset style="display: inline-block;">
-					<legend align="center">Zailtasuna</legend>
-					<br/>
-					1<input id="1" type="radio" name="Zailtasuna" value="1">
-					2<input id="2" type="radio" name="Zailtasuna" value="2">
-					3<input id="3" type="radio" name="Zailtasuna" value="3">
-					4<input id="4" type="radio" name="Zailtasuna" value="4">
-					5<input id="5" type="radio" name="Zailtasuna" value="5">
-					Zehaztugabea<input id="zehaztugabe" type="radio" name="Zailtasuna" value="0">
-				</fieldset>
-
-				<br /><br />
-				<input class="botoia" type="reset" value="Ezabatu" />
-				<input class="botoia" type="submit" value="Gorde aldaketak" />
-				<br />
-			</form>
-		</center>
+					<br /><br />
+					<button type="reset" class="btn btn-default">Ezabatu</button>
+					<button type="submit" class="btn btn-default">Gorde Aldaketak</button>
+					<br />
+				</form>
+			</center>
+		</div>
 	</body>
 </html>
 <?php
@@ -63,9 +100,9 @@
 		$Erantzuna=$l['Erantzuna'];
 		$Zailtasuna=$l['Zailtasuna'];
 		
-		echo "<script>document.getElementById('gaia').value = '$Gaia';</script>";
-		echo "<script>document.getElementById('galdera').value = '$Galdera';</script>";
-		echo "<script>document.getElementById('erantzuna').value = '$Erantzuna';</script>";
+		echo "<script>document.getElementById('Gaia').value = '$Gaia';</script>";
+		echo "<script>document.getElementById('Galdera').value = '$Galdera';</script>";
+		echo "<script>document.getElementById('Erantzuna').value = '$Erantzuna';</script>";
 		if($Zailtasuna == 1){
 			echo "<script>document.getElementById('1').checked = true;</script>";
 		}
