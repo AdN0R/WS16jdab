@@ -3,7 +3,7 @@
 	<head>
 		<meta name="tipo_contenido" content="text/html;" http-equiv="content-type" charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=false;">
-		<title>Quiz - Edit</title>
+		<title>Quiz - Erantzun</title>
 		<link href="./bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
 		<link href="./css/est.css" rel="stylesheet">
 		<script src="./bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
@@ -41,22 +41,28 @@
 		</nav>
 		
 		<div class="container">
-			<div class="jumbotron"><h2>Galdera editatu</h2></div>
+			<div class="jumbotron"><h2>Galdera erantzun</h2></div>
 		</div>
-		
-		<div id="eqBody">
+		<div class="container">
 			<center>
-				<form name="gAldatu" method="POST" action="makeChanges.php">
+				<div id="dMsg"></div>
+				<form name="gErantzun" method="POST" action="ErantzunGaldera.php">
 					<div class="row">
 						<div class="form-group col-sm-offset-4 col-sm-4">
 							<label for="Gaia">Gaia:</label>
-							<input type="text" class="form-control" id="Gaia" name="Gaia" placeholder="Sartu gaia">
+							<input type="text" class="form-control" id="Gaia" name="Gaia" value="" readonly>
 						</div>
 					</div>
 					<div class="row">
 						<div class="form-group col-sm-offset-4 col-sm-4">
 							<label for="Galdera">Galdera:</label>
-							<textarea class="form-control" rows="4" id="Galdera" name="Galdera" placeholder="Sartu zure galdera"></textarea>
+							<textarea class="form-control" rows="4" id="Galdera" name="Galdera" value="" readonly></textarea>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group col-sm-offset-4 col-sm-4">
+							<label for="Zailtasuna">Zailtasuna:</label>
+							<input type="text" class="form-control" id="Zailtasuna" name="Zailtasuna" value="" readonly>
 						</div>
 					</div>
 					<div class="row">
@@ -64,36 +70,30 @@
 							<label for="Erantzuna">Erantzuna:</label>
 							<textarea class="form-control" rows="4" id="Erantzuna" name="Erantzuna" placeholder="Sartu galderaren erantzuna"></textarea>
 						</div>
-					</div>
-					<div class="row">
-						<div class="radio">
-							<label for="Zailtasuna"><strong>Zailtasuna:</strong></label><br />
-							<label class="radio-inline"><input type="radio" name="Zailtasuna" id="1" value="1">1</label>
-							<label class="radio-inline"><input type="radio" name="Zailtasuna" id="2" value="2">2</label>
-							<label class="radio-inline"><input type="radio" name="Zailtasuna" id="3" value="3">3</label>
-							<label class="radio-inline"><input type="radio" name="Zailtasuna" id="4" value="4">4</label>
-							<label class="radio-inline"><input type="radio" name="Zailtasuna" id="5" value="5">5</label>
-							<label class="radio-inline"><input type="radio" name="Zailtasuna" id="zehaztugabe" value="0" checked>Zehaztugabea</label>
-						</div>
-					</div>
+					</div>					
 
 					<br /><br />
-					<button type="reset" class="btn btn-default">Ezabatu</button>
-					<button type="submit" class="btn btn-default">Gorde Aldaketak</button>
+					<button type="submit" class="btn btn-default">Erantzun</button>
 					<br />
 				</form>
 			</center>
 		</div>
 	</body>
 </html>
-<?php
-	session_start();
-	if(isset($_SESSION[User]) && $_SESSION[Irakasle] == "BAI"){
-		$esteka = new mysqli("mysql.hostinger.es", "u396344456_1", "donosti16", "u396344456_quizz");
-		
-		$sen ="SELECT * FROM `galdera` WHERE `Zenbakia` =$_COOKIE[gZb]";	
-		$ema=$esteka->query($sen);
 
+<?php
+	if(isset($_SESSION['nick'])){
+		if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 1800)) {
+			session_unset();
+			session_destroy();
+			header("Location: ./Nick.php");
+		}
+		$_SESSION['LAST_ACTIVITY'] = time();
+		$esteka = new mysqli("mysql.hostinger.es", "u396344456_1", "donosti16", "u396344456_quizz");
+			
+		$sen ="SELECT * FROM `galdera` WHERE `Zenbakia` =$_COOKIE[gZb]";
+		$ema=$esteka->query($sen);
+		
 		$z = $ema->num_rows-1;
 		$ema->data_seek($z);
 		$l= $ema->fetch_assoc();
@@ -101,32 +101,22 @@
 		$Galdera=$l['Galdera'];
 		$Erantzuna=$l['Erantzuna'];
 		$Zailtasuna=$l['Zailtasuna'];
+		$esteka->close();
 		
 		echo "<script>document.getElementById('Gaia').value = '$Gaia';</script>";
 		echo "<script>document.getElementById('Galdera').value = '$Galdera';</script>";
-		echo "<script>document.getElementById('Erantzuna').value = '$Erantzuna';</script>";
-		if($Zailtasuna == 1){
-			echo "<script>document.getElementById('1').checked = true;</script>";
-		}
-		else if($Zailtasuna == 2){
-			echo "<script>document.getElementById('2').checked = true;</script>";
-		}
-		else if($Zailtasuna == 3){
-			echo "<script>document.getElementById('3').checked = true;</script>";
-		}
-		else if($Zailtasuna == 4){
-			echo "<script>document.getElementById('4').checked = true;</script>";
-		}
-		else if($Zailtasuna == 5){
-			echo "<script>document.getElementById('5').checked = true;</script>";
-		}
-		else{
-			echo "<script>document.getElementById('zehaztugabe').checked = true;</script>";
-		}
+		echo "<script>document.getElementById('Zailtasuna').value = '$Zailtasuna';</script>";
 		
-		$esteka->close();
+		if(isset($_POST['Erantzuna'])){
+			$_SESSION['saiak'] = $_SESSION['saiak'] + 1;
+			if($_POST['Erantzuna'] == $Erantzuna){
+				$_SESSION['asm'] = $_SESSION['asm'] + 1;
+				echo "<script>document.getElementById('dMsg').className='alert alert-success alert-dismissible col-sm-offset-4 col-sm-4';document.getElementById('dMsg').innerHTML='<a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">×</a><strong>Ondo!</strong> Galdera ondo erantzun duzu.';</script>";
+			}else{
+				echo "<script>document.getElementById('dMsg').className='alert alert-danger alert-dismissible col-sm-offset-4 col-sm-4';document.getElementById('dMsg').innerHTML='<a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">×</a><strong>Txarto!</strong> Galdera txarto erantzun duzu.';</script>";
+			}
+		}
 	}else{
-		echo "<script>document.getElementById('eqBody').innerHTML = '<center><h2 style=\"color: red\"> Irakasle moduan logeatu behar zara</h2></center>';</script>";
+		header("Location: ./Nick.php");
 	}
-
 ?>

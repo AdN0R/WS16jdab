@@ -13,33 +13,19 @@
 		
 		<script src="JS.js"></script>
 		<script type="text/javascript" language="javascript">
-			xhttp = new XMLHttpRequest();
-			xhttp2 = new XMLHttpRequest();
-			xhttp3 = new XMLHttpRequest();
-			
-			xhttp.onreadystatechange = function(){
-				if((xhttp.readyState==4)&&(xhttp.status==200)){
-					document.getElementById("dposta").innerHTML= xhttp.responseText;
-				}
-			};
-			xhttp2.onreadystatechange = function(){
-				if((xhttp2.readyState==4)&&(xhttp2.status==200)){
-					document.getElementById("dpasahitza").innerHTML= xhttp2.responseText;
-				}
-			};
-			xhttp3.onreadystatechange = function(){
-				if((xhttp3.readyState==4)&&(xhttp3.status==200)){
-					document.getElementById("dposta2").innerHTML= xhttp3.responseText;
-				}
-			};
-			
+
 			function epostaKonprobatu(){
 				var posta = document.getElementById("Eposta").value;
-				xhttp.open("GET","MatrikulaKonprobatu.php?Eposta="+posta, true);
-				xhttp.send();
-				
-				xhttp3.open("GET","ErrepikatutaKonprobatu.php?Errepika="+posta, true);
-				xhttp3.send();
+				$('#dposta').html("<span style='color:grey'>Kargatzen</span>");
+				var jqxhr=$.get("MatrikulaKonprobatu.php", {Eposta:posta},function(datuak){$('#dposta').fadeIn(1000).html(datuak);});
+				jqxhr.fail(function(){
+					$('#dposta').fadeIn().html("<span style='color:red'>Errorea jQuery-n</span>");
+				})
+				$('#dposta2').html("<span style='color:grey'>Kargatzen</span>");
+				var jqxhr=$.get("ErrepikatutaKonprobatu.php", {Errepika:posta},function(datuak){$('#dposta2').fadeIn(1000).html(datuak);});
+				jqxhr.fail(function(){
+					$('#dposta2').fadeIn().html("<span style='color:red'>Errorea jQuery-n</span>");
+				})
 			}
 			
 			function passKonprobatu(){
@@ -47,9 +33,11 @@
 				if (pass.trim().length < 6){
 					document.getElementById("dpasahitza").innerHTML= "<span style='color:red'>Pasahitzak 6ko luzera edo gehiago euki behar du</span>";
 				}else{
-					xhttp2.open("POST","PasswordKonprobatu.php", true);
-					xhttp2.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-					xhttp2.send("Pass="+pass);
+					$('#dpasahitza').html("<span style='color:grey'>Kargatzen</span>");
+					var jqxhr=$.post("PasswordKonprobatu.php", {Pass:pass}, function(datuak){$('#dpasahitza').fadeIn(1000).html(datuak);});
+					jqxhr.fail(function(){
+						$('#dpasahitza').fadeIn().html("<span style='color:red'>Errorea jQuery-n</span>");
+					})
 				}
 			}
 			
@@ -71,8 +59,7 @@
 				}
 			}
 		</script>
-
-		</head>
+	</head>
 	<body>
 		<nav class="navbar navbar-inverse">
 			<div class="container">
@@ -87,7 +74,7 @@
 				</div>
 				<div id="navbar" class="collapse navbar-collapse">
 					<ul class="nav navbar-nav">
-						<li><a href="./ShowQuizz.php">Quizzes</a></li>
+						<?php if(!isset($_SESSION[User])){echo "<li><a href='./Nick.php'>Erantzun Galderak</a></li>";}?>
 						<?php session_start(); if(isset($_SESSION[User]) && $_SESSION["Irakasle"] == "BAI"){echo "<li><a href='./reviewingQuizzes.php'>Galderak ikusi</a></li>";}?>
 						<?php if(isset($_SESSION[User]) && $_SESSION["Irakasle"] == "BAI"){echo "<li><a href='./Erabiltzaileak.php'>Erabiltzaileak ikusi</a></li>";}?>
 						<?php if(isset($_SESSION[User]) && $_SESSION["Irakasle"] == "EZ"){echo "<li><a href='./handlingQuizes.php'>Sortu Galdera</a></li>";}?>

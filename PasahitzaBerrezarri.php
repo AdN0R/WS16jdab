@@ -12,6 +12,25 @@
 		<script src="./bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 		
 		<script src="JS.js"></script>
+		<script type="text/javascript" language="javascript">
+
+			function pasKon(){
+				var pass = document.getElementById("Pasahitza").value;
+				$('#pasBal').html("<span style='color:grey'>Kargatzen</span>");
+				var jqxhr=$.post("PasswordKonprobatu.php", {Pass:pass}, function(datuak){$('#pasBal').fadeIn(1000).html(datuak);});
+				jqxhr.fail(function(){
+					$('#pasBal').fadeIn().html("<span style='color:red'>Errorea jQuery-n</span>");
+				})
+			}
+			
+			function fro(){
+				if(document.getElementById("pasBal").innerHTML.trim() === "BALIOZKOA"){
+					return true;
+				}else{
+					return false;
+				}
+			}
+		</script>
 	</head>
 	<body>
 		<nav class="navbar navbar-inverse">
@@ -27,7 +46,7 @@
 				</div>
 				<div id="navbar" class="collapse navbar-collapse">
 					<ul class="nav navbar-nav">
-						<li><a href="./ShowQuizz.php">Quizzes</a></li>
+						<?php if(!isset($_SESSION[User])){echo "<li><a href='./Nick.php'>Erantzun Galderak</a></li>";}?>
 						<?php session_start(); if(isset($_SESSION[User]) && $_SESSION["Irakasle"] == "BAI"){echo "<li><a href='./reviewingQuizzes.php'>Galderak ikusi</a></li>";}?>
 						<?php if(isset($_SESSION[User]) && $_SESSION["Irakasle"] == "BAI"){echo "<li><a href='./Erabiltzaileak.php'>Erabiltzaileak ikusi</a></li>";}?>
 						<?php if(isset($_SESSION[User]) && $_SESSION["Irakasle"] == "EZ"){echo "<li><a href='./handlingQuizes.php'>Sortu Galdera</a></li>";}?>
@@ -48,7 +67,7 @@
 		</div>
 		
 		<div id="errorMsg"></div>
-		<form id="fBerrezarri" name="fBerrezarri" method="POST" action="PasahitzaBerrezarri.php">
+		<form id="fBerrezarri" name="fBerrezarri" onSubmit="return fro()" method="POST" action="PasahitzaBerrezarri.php">
 			<div class="row">
 				<div class="form-group col-sm-offset-4 col-sm-4">
 					<label for="Eposta">Eposta ekektronikoa:</label>
@@ -58,7 +77,7 @@
 			<div class="row">
 				<div class="form-group col-sm-offset-4 col-sm-4">
 					<label for="Pasahitza">Pasahitza berria:</label>
-					<input type="password" class="form-control" id="Pasahitza" name="Pasahitza" placeholder="Sartu pasahitza">
+					<input type="password" class="form-control" id="Pasahitza" name="Pasahitza" onblur="pasKon()" placeholder="Sartu pasahitza">
 				</div>
 			</div>
 			<div class="row">
@@ -67,6 +86,9 @@
 					<input type="password" class="form-control" id="Pasahitza2" name="Pasahitza2" placeholder="Errepikatu pasahitza">
 				</div>
 			</div>
+			<br/>
+			<center>Pasahitza baliozkoa izan behar da:<br/>
+			<div id="pasBal"></div></center><br/><br/>
 			<button type="submit" class="btn btn-default col-sm-offset-7">Bidali</button>
 		</form>
 	</body>
@@ -79,13 +101,26 @@
 					$esteka = new mysqli("mysql.hostinger.es", "u396344456_1", "donosti16", "u396344456_quizz");
 					$pass = sha1($_POST['Pasahitza']);
 					
-					$sql = "UPDATE erabiltzailea SET Pasahitza = '$pass' WHERE Eposta LIKE '$_POST[Eposta]'";	
-					if(!$esteka->query($sql)){
-						die("$Errorea: " . $esteka->error);		
+					$sql = "SELECT COUNT(*) FROM erabiltzailea WHERE Eposta LIKE '$_POST[Eposta]'";
+					$ema = $esteka->query($sql);
+					if(!$ema){
+						die("$Errorea: " . $esteka->error);
 					}
+					$z = $ema->num_rows-1;
+					$ema->data_seek($z);
+					$l= $ema->fetch_assoc();
+					$aur=$l['COUNT(*)'];
+					if($aur == 0){
+						echo "<script>document.getElementById('errorMsg').className='alert alert-danger alert-dismissible col-sm-offset-4 col-sm-4';document.getElementById('errorMsg').innerHTML='<a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">×</a><strong>Errorea!</strong> Erabiltzailea ez da zuzena.';</script>";
+					}else{
+						$sql = "UPDATE erabiltzailea SET Pasahitza = '$pass' WHERE Eposta LIKE '$_POST[Eposta]'";	
+						if(!$esteka->query($sql)){
+							die("$Errorea: " . $esteka->error);
+						}
 
-					$esteka->close();
-					echo "<script>alert('Pasahitza aldatu da!');window.location = \"./SignIn.php\";</script>";
+						$esteka->close();
+						echo "<script>alert('Pasahitza aldatu da!');window.location = \"./SignIn.php\";</script>";
+					}
 				}else{
 					echo "<script>document.getElementById('errorMsg').className='alert alert-danger alert-dismissible col-sm-offset-4 col-sm-4';document.getElementById('errorMsg').innerHTML='<a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">×</a><strong>Errorea!</strong> Pasahitzak berdinak izan behar dira.';</script>";
 				}

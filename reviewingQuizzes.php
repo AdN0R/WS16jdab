@@ -12,24 +12,10 @@
 		
 		<script src="JS.js"></script>
 		<script type="text/javascript" language="javascript" >
-			
-			xhttp = new XMLHttpRequest();
-			xhttp.onreadystatechange = function(){
-				if((xhttp.readyState==4)&&(xhttp.status==200)){
-					document.getElementById("galdiv").innerHTML=xhttp.responseText;
-					}
-			};
-			function galIku(){
-				document.getElementById("txertatu").innerHTML= "";
-				xhttp.open("GET","ErabiltzaileGalderak.php", true);
-				xhttp.send();
-			}
-			
 			function aldatu(zbk){
 				document.cookie = "gZb="+zbk;
 				window.location = "./editQuestion.php";
 			}
-			
 		</script>
 	</head>
 	<body>
@@ -46,7 +32,7 @@
 				</div>
 				<div id="navbar" class="collapse navbar-collapse">
 					<ul class="nav navbar-nav">
-						<li><a href="./ShowQuizz.php">Quizzes</a></li>
+						<?php if(!isset($_SESSION[User])){echo "<li><a href='./Nick.php'>Erantzun Galderak</a></li>";}?>
 						<?php session_start(); if(isset($_SESSION[User]) && $_SESSION["Irakasle"] == "BAI"){echo "<li class='active'><a href='./reviewingQuizzes.php'>Galderak ikusi</a></li>";}?>
 						<?php if(isset($_SESSION[User]) && $_SESSION["Irakasle"] == "BAI"){echo "<li><a href='./Erabiltzaileak.php'>Erabiltzaileak ikusi</a></li>";}?>
 						<?php if(isset($_SESSION[User]) && $_SESSION["Irakasle"] == "EZ"){echo "<li><a href='./handlingQuizes.php'>Sortu Galdera</a></li>";}?>
