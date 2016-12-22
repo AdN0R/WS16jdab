@@ -3,7 +3,7 @@
 	require_once('lib/class.wsdlcache.php');
 
 	$server = new soap_server;
-	$ns="http://talde6.hol.es";
+	$ns="http://wsjdab.esy.es";
 	$server->configureWSDL('passKonprobatu', $ns);
 	$server->wsdl->schemaTargetNamespace=$ns;
 	$server->register('passKonprobatu', array('x'=>'xsd:string'), array('return'=>'xsd:string'), $ns);

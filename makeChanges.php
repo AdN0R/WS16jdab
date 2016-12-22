@@ -7,11 +7,11 @@
 			die('Errorea: ' . $esteka->error);		
 		}
 		
-		echo "<script>alert(\"Aldaketa egin da datu basean.\"); window.location = \"http://talde6.hol.es/reviewingQuizzes.php\";</script>";
+		echo "<script>alert(\"Aldaketa egin da datu basean.\"); window.location = \"./reviewingQuizzes.php\";</script>";
 		
 		$esteka->close();
 		
 	}else{
-		echo "<script>alert(\"Irakasle moduan logeatu behar zara.\"); window.location = \"http://talde6.hol.es/Layout.php\";</script>";
+		echo "<script>alert(\"Irakasle moduan logeatu behar zara.\"); window.location = \"./Layout.php\";</script>";
 	}
 ?>

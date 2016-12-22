@@ -3,7 +3,7 @@
 	<head>
 		<meta name="tipo_contenido" content="text/html;" http-equiv="content-type" charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=false;">
-		<title>Quiz - Sign In</title>
+		<title>Quiz - Berrezarri</title>
 		
 		<link href="./bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
 		<link href="./css/est.css" rel="stylesheet">
@@ -36,7 +36,7 @@
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<?php if(!isset($_SESSION[User])){echo "<li><a href='./SimpleReg.php'>Sign Up</a></li>";}?>
-						<?php if(!isset($_SESSION[User])){echo "<li class='active'><a href='./SignIn.php'>Sign In</a></li>";}?>
+						<?php if(!isset($_SESSION[User])){echo "<li><a href='./SignIn.php'>Sign In</a></li>";}?>
 						<?php if(isset($_SESSION[User])){echo "<li class='dropdown'><a href='#' class='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>$_SESSION[User] <span class='caret'></span></a><ul class='dropdown-menu'><li><a href='./LogOut.php'>LogOut</a></li></ul></li>";}?>
 					</ul>
 				</div>
@@ -44,10 +44,11 @@
 		</nav>
 		
 		<div class="container">
-			<div class="jumbotron"><h2>Logeatu erabiltzaile kontura</h2></div>
+			<div class="jumbotron"><h2>Pasahitza Berrezarri</h2></div>
 		</div>
 		
-		<form id="fAutentikatu" name="fAutentikatu" method="POST" action="SignIn.php">
+		<div id="errorMsg"></div>
+		<form id="fBerrezarri" name="fBerrezarri" method="POST" action="PasahitzaBerrezarri.php">
 			<div class="row">
 				<div class="form-group col-sm-offset-4 col-sm-4">
 					<label for="Eposta">Eposta ekektronikoa:</label>
@@ -56,77 +57,44 @@
 			</div>
 			<div class="row">
 				<div class="form-group col-sm-offset-4 col-sm-4">
-					<label for="Pasahitza">Pasahitza:</label>
+					<label for="Pasahitza">Pasahitza berria:</label>
 					<input type="password" class="form-control" id="Pasahitza" name="Pasahitza" placeholder="Sartu pasahitza">
 				</div>
 			</div>
-			<button type="button" class="btn btn-link col-sm-offset-4" onclick="location.href='./PasahitzaBerrezarri.php'">Zure gakoa ahaztu duzu?</button>
-			<button type="submit" class="btn btn-default col-sm-offset-1">Bidali</button>
+			<div class="row">
+				<div class="form-group col-sm-offset-4 col-sm-4">
+					<label for="Pasahitza">Pasahitza berria errepikatu:</label>
+					<input type="password" class="form-control" id="Pasahitza2" name="Pasahitza2" placeholder="Errepikatu pasahitza">
+				</div>
+			</div>
+			<button type="submit" class="btn btn-default col-sm-offset-7">Bidali</button>
 		</form>
 	</body>
 </html>
 <?php
-	if(isset($_POST[Eposta])){
-		if(!isset($_SESSION["SaiPos"]) || $_SESSION["SaiPos"] != $_POST[Eposta]){
-			$_SESSION["SaiPos"] = $_POST[Eposta];
-			$_SESSION["SaiKop"] = 0;
-		}
-		if($_SESSION["SaiPos"] == $_POST[Eposta] && $_SESSION["SaiKop"] == 3){
-			echo "<center><font color='red'>Saiakera kopuru maximora heldu zara </font></center>";
-		}
-		else if (!filter_var($_POST[Eposta], FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-z]{3,}[0-9]{3}(@ikasle\.ehu\.e)(s|us)$/"))) === false) {
-				$esteka = new mysqli("mysql.hostinger.es", "u396344456_1", "donosti16", "u396344456_quizz");
-	
-				$sen ="SELECT Pasahitza FROM erabiltzailea WHERE Eposta LIKE '$_POST[Eposta]'";
-				$ema=$esteka->query($sen);
-				$z = $ema->num_rows;
-				if($z==1){
-					$ema->data_seek(1);
-					$l= $ema->fetch_assoc();
-					$Pasahitza=$l['Pasahitza'];
-					$p = $_POST["Pasahitza"];
-					if($Pasahitza == sha1($p)){
-						session_start();
-						$_SESSION["User"] = $_POST[Eposta];
-						$_SESSION["Irakasle"] = "EZ";
-						header("Location: ./handlingQuizes.php");
+	if(isset($_POST[Eposta]) && isset($_POST[Pasahitza]) && isset($_POST[Pasahitza2])){
+		if (!filter_var($_POST[Eposta], FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-z]{3,}[0-9]{3}(@ikasle\.ehu\.e)(s|us)$/"))) === false) {
+			if(strlen($_POST['Pasahitza'])>= 6){
+				if($_POST['Pasahitza'] == $_POST['Pasahitza2']){
+					$esteka = new mysqli("mysql.hostinger.es", "u396344456_1", "donosti16", "u396344456_quizz");
+					$pass = sha1($_POST['Pasahitza']);
+					
+					$sql = "UPDATE erabiltzailea SET Pasahitza = '$pass' WHERE Eposta LIKE '$_POST[Eposta]'";	
+					if(!$esteka->query($sql)){
+						die("$Errorea: " . $esteka->error);		
 					}
-					else{
-						echo "<center><font color='red'>Errorea: Pasahitza ez da zuzena</font></center>";
-						$_SESSION["SaiKop"] = $_SESSION["SaiKop"] + 1;
-						echo "<center><font color='red'>Saiakera kopurua: $_SESSION[SaiKop]</font></center>";
-					}
+
+					$esteka->close();
+					echo "<script>alert('Pasahitza aldatu da!');window.location = \"./SignIn.php\";</script>";
+				}else{
+					echo "<script>document.getElementById('errorMsg').className='alert alert-danger alert-dismissible col-sm-offset-4 col-sm-4';document.getElementById('errorMsg').innerHTML='<a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">×</a><strong>Errorea!</strong> Pasahitzak berdinak izan behar dira.';</script>";
 				}
-				else{
-					echo "<center><font color='red'>Errorea: Emaila ez da zuzena</font></center>";
-				}
-		}else if(!filter_var($_POST[Eposta], FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-z]{3,}[0-9]{3}(@ehu\.e)(s|us)$/"))) === false){
-			$esteka = new mysqli("mysql.hostinger.es", "u396344456_1", "donosti16", "u396344456_quizz");
-	
-			$sen ="SELECT Pasahitza FROM erabiltzailea WHERE Eposta LIKE '$_POST[Eposta]'";
-			$ema=$esteka->query($sen);
-			$z = $ema->num_rows;
-			if($z==1){
-				$ema->data_seek(1);
-				$l= $ema->fetch_assoc();
-				$Pasahitza=$l['Pasahitza'];
-				$p = $_POST["Pasahitza"];
-				if($Pasahitza == sha1($p)){
-					session_start();
-					$_SESSION["User"] = $_POST[Eposta];
-					$_SESSION["Irakasle"] = "BAI";
-					header("Location: ./reviewingQuizzes.php");
-				}
-				else{
-					echo "<center><font color='red'>Errorea: Pasahitza ez da zuzena</font></center>";
-				}
-			}
-			else{
-				echo "<center><font color='red'>Errorea: Emaila ez da zuzena</font></center>";
+			}else{
+				echo "<script>document.getElementById('errorMsg').className='alert alert-danger alert-dismissible col-sm-offset-4 col-sm-4';document.getElementById('errorMsg').innerHTML='<a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">×</a><strong>Errorea!</strong> Pasahitza 6 baino luzeagoa izan behar da.';</script>";
 			}
 		}else{
-			echo "<center><font color='red'>Emailaren formatoa txarto dago</font></center>";
+			echo "<script>document.getElementById('errorMsg').className='alert alert-danger alert-dismissible col-sm-offset-4 col-sm-4';document.getElementById('errorMsg').innerHTML='<a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">×</a><strong>Errorea!</strong> Eposta formatu desegokia dauka.';</script>";
 		}
+				
 	}
-
 ?>

@@ -19,15 +19,10 @@
 					document.getElementById("galdiv").innerHTML=xhttp.responseText;
 					}
 			};
-			function galIku(){
-				document.getElementById("txertatu").innerHTML= "";
-				xhttp.open("GET","ErabiltzaileGalderak.php", true);
-				xhttp.send();
-			}
 		</script>
 	</head>
 	<body>
-		<nav class="navbar navbar-inverse navbar-fixed-top">
+		<nav class="navbar navbar-inverse">
 			<div class="container">
 				<div class="navbar-header">
 					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -41,12 +36,16 @@
 				<div id="navbar" class="collapse navbar-collapse">
 					<ul class="nav navbar-nav">
 						<li><a href="./ShowQuizz.php">Quizzes</a></li>
-						<?php session_start(); if(!isset($_SESSION[User])){echo "<li><a href='./SignIn.php'>Sign In</a></li>";}?>
-						<?php if(!isset($_SESSION[User])){echo "<li><a href='./SimpleReg.php'>Sign Up</a></li>";}?>
-						<?php if(isset($_SESSION[User]) && $_SESSION["Irakasle"] == "BAI"){echo "<li><a href='./reviewingQuizzes.php'>Review</a></li>";}?>
-						<?php if(isset($_SESSION[User]) && $_SESSION["Irakasle"] == "EZ"){echo "<li class='active'><a href='./handlingQuizes.php'>Handle</a></li>";}?>
-						<?php if(isset($_SESSION[User])){echo "<li><a href='./LogOut.php'>LogOut</a></li>";}?>
+						<?php session_start(); if(isset($_SESSION[User]) && $_SESSION["Irakasle"] == "BAI"){echo "<li><a href='./reviewingQuizzes.php'>Galderak ikusi</a></li>";}?>
+						<?php if(isset($_SESSION[User]) && $_SESSION["Irakasle"] == "BAI"){echo "<li><a href='./Erabiltzaileak.php'>Erabiltzaileak ikusi</a></li>";}?>
+						<?php if(isset($_SESSION[User]) && $_SESSION["Irakasle"] == "EZ"){echo "<li class='active'><a href='./handlingQuizes.php'>Sortu Galdera</a></li>";}?>
+						<?php if(isset($_SESSION[User]) && $_SESSION["Irakasle"] == "EZ"){echo "<li><a href='./ErabiltzaileGalderak.php'>Ikusi Galderak</a></li>";}?>						
 						<li><a href="./Credits.php">Credits</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<?php if(!isset($_SESSION[User])){echo "<li><a href='./SimpleReg.php'>Sign Up</a></li>";}?>
+						<?php if(!isset($_SESSION[User])){echo "<li><a href='./SignIn.php'>Sign In</a></li>";}?>
+						<?php if(isset($_SESSION[User])){echo "<li class='dropdown'><a href='#' class='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>$_SESSION[User] <span class='caret'></span></a><ul class='dropdown-menu'><li><a href='./LogOut.php'>LogOut</a></li></ul></li>";}?>
 					</ul>
 				</div>
 			</div>
@@ -55,6 +54,7 @@
 		<div class="container">
 			<div class="jumbotron"><h2>Erabiltzaile kontuaren galderen kudeaketa</h2></div>
 		</div>
+		<div id=zenb></div>
 		<div id="hqBody">
 			<div>
 				<center>
@@ -93,7 +93,6 @@
 					<button type="reset" class="btn btn-default">Ezabatu</button>
 					<button type="submit" class="btn btn-default">Bidali</button>
 					<br />
-					<button type="button" class="btn btn-default" onclick="galIku()">Ikusi zure galderak</button>
 				</form>
 				</center>
 			</div>
@@ -114,27 +113,35 @@
 			}		
 			$esteka->close();
 			
-			//Gorde Galdera XML-n
-			$xml = simplexml_load_file('galderak.xml','SimpleXMLElement', LIBXML_NOWARNING);
-			if (!$xml){
-				echo '<script>document.getElementById("txertatu").innerHTML= "Errorea XML txertaketan";</script>';
-				exit;
-			}
-			$item = $xml->addChild('assessmentItem');
-			$item->addAttribute('complexity', $_POST['Zailtasuna']);
-			$item->addAttribute('subject', $_POST['Gaia']);
-			
-			$body = $item->addChild('itemBody');
-			$body->addChild('p', $_POST['Galdera']);
-			
-			$response = $item->addChild('correctResponse');
-			$response->addChild('value', $_POST['Erantzuna']);
-
-			$xml->asXML('galderak.xml');
-			
 			echo "<script>document.getElementById('txertatu').innerHTML= \"Galdera gehitu da!\";</script>";
 		}
 	}else{
-		echo "<script>document.getElementById('hqBody').innerHTML = '<center><h2 style=\"color: red\">Ikasle moduan Logeatu behar zara</h2></center>';</script>";
+		echo "<script>alert(\"Ikasle moduan Logeatu behar zara\"); window.location = \"./Layout.php\";</script>";
+	}
+	if(isset($_SESSION[User])){
+		$esteka = new mysqli("mysql.hostinger.es", "u396344456_1", "donosti16", "u396344456_quizz");
+		$sen ="SELECT COUNT(*) FROM galdera WHERE egilea = '$_SESSION[User]'";
+		$ema=$esteka->query($sen);
+		if(!$ema){
+			die('Errorea: ' . $esteka->error);		
+		}
+		$z = $ema->num_rows-1;
+		$ema->data_seek($z);
+		$l= $ema->fetch_assoc();
+		$EraG=$l['COUNT(*)'];
+		
+		$sen ="SELECT COUNT(*) FROM galdera";
+		$ema=$esteka->query($sen);
+		if(!$ema){
+			die('Errorea: ' . $esteka->error);		
+		}
+		$z = $ema->num_rows-1;
+		$ema->data_seek($z);
+		$l= $ema->fetch_assoc();
+		$GuzG=$l['COUNT(*)'];
+		
+		$esteka->close();
+		
+		echo"<script>document.getElementById('zenb').innerHTML= '<center><h4>Zure erabiltzaile kontuaren galdera kopurua: $EraG</h4><h4>Webguneko galdera kopurua: $GuzG</h4><br/><br/></center>';</script>";
 	}
 ?>
